@@ -34,12 +34,8 @@ if(!Array.prototype.myMap){
     Array.prototype.myMap=function(userFn){
         const ans=[]
         for(let i=0;i<this.length;i++){
-            
-                const value=userFn(this[i],i);
-                ans.push(value)
-            
-            
-            
+            const value=userFn(this[i],i);
+            ans.push(value)  
         }
         return ans;
     }
