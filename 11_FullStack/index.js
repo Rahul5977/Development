@@ -2,6 +2,7 @@ import express, { urlencoded } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import db from "./utils/db.js";
+import cookieParser from "cookie-parser";
 
 //import all routes
 import userRoutes from "./routes/user.routes.js"
@@ -21,6 +22,7 @@ app.use(
 
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
+app.use(cookieParser());//ab mai cookies ko access kr skta hu (req or res dono me)
 
 app.get("/", (req, res) => {
   res.send("Cohort");
