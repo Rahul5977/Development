@@ -39,7 +39,7 @@ const registerUser = async (req, res) => {
     //send token as email to user
     const transporter = nodemailer.createTransport({
       host: process.env.MAILTRAP_HOST,
-      port: process.env.MAILTRAP_POST,
+      port: process.env.MAILTRAP_PORT,
       secure: false, // true for 465, false for other ports
       auth: {
         user: process.env.MAILTRAP_USER,
@@ -47,7 +47,7 @@ const registerUser = async (req, res) => {
       },
     });
     const mailOpt = {
-      from: process.env.MAILTRAP_SENDEREMAIL,
+      from: "rahul.raj9237@gmail.com",
       to: user.email,
       subject: "Hello ✔",
       text: `Please click on the following link:
@@ -96,6 +96,9 @@ const verifyUser = async (req, res) => {
     });
   }
   user.isVarified = true;
+  res.status(201).json({
+    message: "User verified !",
+  });
   user.varificationToken = undefined;
   await user.save();
 };
@@ -123,9 +126,13 @@ const loginUser = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: user._id, role: user.role }, "shhhhh", {
-      expiresIn: "24h",
-    });
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
     const cookieOptions = {
       httpOnly: true,
       secure: true,
@@ -151,4 +158,27 @@ const loginUser = async (req, res) => {
     });
   }
 };
+
+const getMe = async (req, res) => {
+  try {
+    //token me se data nikalna h
+    //token cookies se milegi
+
+    
+  } catch (error) {}
+};
+const logoutUser = async (req, res) => {
+  try {
+  } catch (error) {}
+};
+
+const forgotPassword = async (req, res) => {
+  try {
+  } catch (error) {}
+};
+const resetPassword = async (req, res) => {
+  try {
+  } catch (error) {}
+};
+
 export { registerUser, verifyUser, loginUser };
