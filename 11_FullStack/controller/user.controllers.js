@@ -163,12 +163,25 @@ const getMe = async (req, res) => {
   try {
     //token me se data nikalna h
     //token cookies se milegi
-
-    
+    // const data=req.user
+    console.log("Reached at getMe");
+    // console.log(data);
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "User not found!",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      user,
+    });
   } catch (error) {}
 };
 const logoutUser = async (req, res) => {
   try {
+    res.cookie('token','',{})
   } catch (error) {}
 };
 
@@ -181,4 +194,12 @@ const resetPassword = async (req, res) => {
   } catch (error) {}
 };
 
-export { registerUser, verifyUser, loginUser };
+export {
+  registerUser,
+  verifyUser,
+  loginUser,
+  getMe,
+  logoutUser,
+  resetPassword,
+  forgotPassword,
+};
