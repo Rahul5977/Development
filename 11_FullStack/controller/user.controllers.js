@@ -179,18 +179,41 @@ const getMe = async (req, res) => {
     });
   } catch (error) {}
 };
+
 const logoutUser = async (req, res) => {
   try {
-    res.cookie('token','',{})
+    res.cookie("token", "", {});
+    res.status(200).json({
+      success: true,
+      message: "Logged Out !!",
+    });
   } catch (error) {}
 };
 
 const forgotPassword = async (req, res) => {
   try {
+    //get emai from req.body
+    //find user based on email
+    //reset token +reset expiry =>Date.now() +10*6*1000=> user.save()
+    //send mail =>design url
   } catch (error) {}
 };
 const resetPassword = async (req, res) => {
   try {
+    //collect token from params
+    // password from req.body
+    //find user
+    const { token } = req.params;
+    const { password } = req.body;
+    try {
+      const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpiries: { $gt: Date.now() },
+      });
+      //set password in user 
+      //resetToken,resetExpiry=>empty 
+      //save
+    } catch (error) {}
   } catch (error) {}
 };
 

@@ -2,6 +2,7 @@ import express from "express";
 import {
   getMe,
   loginUser,
+  logoutUser,
   registerUser,
   verifyUser,
 } from "../controller/user.controllers.js";
@@ -13,5 +14,6 @@ router.post("/register", registerUser);
 router.get("/verify/:token", verifyUser);
 router.post("/login", loginUser);
 router.get("/me", isLoggedIn, getMe);
+router.get("/logout", isLoggedIn, logoutUser);
 
 export default router;
