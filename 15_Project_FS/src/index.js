@@ -16,6 +16,6 @@ connectDB()
     });
   })
   .catch(err => {
-    console.error("MongoDb connection error", err);
+    console.error(`MongoDb connection error`, err);
     process.exit(1);
   });
