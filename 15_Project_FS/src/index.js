@@ -1,10 +1,11 @@
-import app from "./app";
-import connectDB from "./db/dbConnect";
+import app from "./app.js";
+import connectDB from "./db/dbConnect.js";
 
 import dotenv from "dotenv";
+console.log("Server file is running ..");
 
 dotenv.config({
-  path: "./.env",
+  path: "./.env"
 });
 const PORT = process.env.PORT || 8000;
 
