@@ -59,12 +59,12 @@ const userSchema = new Schema({
 });
 
 //password hash krna h...save krne se just pehle--> hooks
-userSchema.pre("save", async next => {
+userSchema.pre("save", async (next) => {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
-userSchema.methods.isPasswordCorrect = async password => {
+userSchema.methods.isPasswordCorrect = async (password) => {
   return await bcrypt.compare(password, this.password);
 };
 userSchema.methods.generateAccesToken = async () => {
@@ -92,9 +92,12 @@ userSchema.methods.generateRefreshToken = async () => {
 userSchema.methods.generateTemporaryToken = async () => {
   const unHashedToken = crypto.randomBytes(20).toString("hex");
 
-  const hashedToken = crypto.createHash("sha256").update(unHashedToken).digest("hex");
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(unHashedToken)
+    .digest("hex");
   const tokenExpiry = Date.now() + 20 * 60 * 1000;
-  return {hashedToken,unHashedToken,tokenExpiry}
+  return { hashedToken, unHashedToken, tokenExpiry };
 };
 
 export const User = mongoose.model("User", userSchema);

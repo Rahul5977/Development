@@ -1,5 +1,10 @@
 class ApiError extends Error {
-  constructure(statusCode, message = "Something went wrong", errors = [], stack = "") {
+  constructure(
+    statusCode,
+    message = "Something went wrong",
+    errors = [],
+    stack = ""
+  ) {
     super(message);
     this.statusCode = statusCode;
     this.message = message;
