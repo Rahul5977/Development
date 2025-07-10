@@ -1,14 +1,14 @@
 import User from "../models/user.model.js";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
-import bycrpt from "bcrypt";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({
-      messae: "All fields are required",
+      message: "All fields are required",
     });
   }
   try {
@@ -18,22 +18,23 @@ const registerUser = async (req, res) => {
         message: "User already exist",
       });
     }
+    const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
       name,
       email,
-      password,
+      password:hashedPassword,
     });
 
     if (!user) {
       return res.status(400).json({
-        message: "User not reistered !",
+        message: "User not registered !",
       });
     }
     //creating a verification token->using crypto (node package)
 
     const token = crypto.randomBytes(32).toString("hex");
     console.log(token);
-    user.varificationToken = token;
+    user.verificationToken = token;
     await user.save();
 
     //send token as email to user
@@ -51,7 +52,7 @@ const registerUser = async (req, res) => {
       to: user.email,
       subject: "Hello ✔",
       text: `Please click on the following link:
-    ${process.env.BASE_URL}/api/v1/user/verify/${token}
+    ${process.env.BASE_URL}/api/v1/users/verify/${token}
     `,
     };
     const sender = transporter.sendMail(mailOpt);
@@ -118,7 +119,7 @@ const loginUser = async (req, res) => {
         message: "Invalid email or password !",
       });
     }
-    const isMatched = await bycrpt.compare(password, user.password);
+    const isMatched = await bcrypt.compare(password, user.password);
     console.log(isMatched);
     if (!isMatched) {
       return res.status(400).json({
@@ -139,7 +140,7 @@ const loginUser = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
     };
 
-    res.cookie("test", token, { cookieOptions });
+    res.cookie("test", token,  cookieOptions );
 
     res.status(200).json({
       message: "Successfully loged in",
@@ -193,7 +194,9 @@ const logoutUser = async (req, res) => {
 const forgotPassword = async (req, res) => {
   try {
     //get emai from req.body
+    const email=req.body
     //find user based on email
+    const user=await User.findOne({email})
     //reset token +reset expiry =>Date.now() +10*6*1000=> user.save()
     //send mail =>design url
   } catch (error) {}
