@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import UserContext from "../context/userContext.js";
 
-export const login = () => {
+
+const Login = () => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const { setUser } = useContext(UserContext);
@@ -18,6 +19,7 @@ export const login = () => {
         onChange={(e) => setUsername(e.target.value)}
         placeholder="Username"
       />
+      {" "}
       <input
         type="password"
         value={password}
@@ -28,3 +30,5 @@ export const login = () => {
     </div>
   );
 };
+export default Login
+
